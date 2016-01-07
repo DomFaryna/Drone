@@ -34,25 +34,28 @@ float irradiance;                      // Calculated irradiance (uW/cm2)
 void setup() {
  Serial.begin(9600);                           // Start and configure the serial port
  attachInterrupt(0, PulseCount, RISING);
- pinMode(TSL235R, INPUT);                    // Declare the pin such as an input of data
+ pinMode(TSL235R, INPUT);
+ Serial.write("1"); // Declare the pin such as an input of data
  Serial.println("Testing a TSL235R sensor:");  // Splash screen
  Serial.println("-------------------------");
  Serial.println();  
 }
 
 void loop(){
- counter++;                           // Increase the number of measurement
- Serial.print(counter);               // Print the measurement number
- getfrequency();                      // Request to measure the frequency
- Serial.print("  ");
- Serial.print(frequency);             // print the frequency (pulses/second)
- Serial.print(" pulses/second    ");
- getirradiance();                     // Request to calculate the irradiance (uW/cm2)
- Serial.print("  ");
- Serial.print(irradiance);             // print the frequency (pulses/second)
- Serial.println(" uW/cm2");
- pulses = 0;                          // reset the pulses counter
- delay (4000);                        // wait 4 seconds until the next measurement
+  if(Serial.available() > 0){
+   counter++;                           // Increase the number of measurement
+   Serial.print(counter);               // Print the measurement number
+   getfrequency();                      // Request to measure the frequency
+   Serial.print("  ");
+   Serial.print(frequency);             // print the frequency (pulses/second)
+   Serial.print(" pulses/second    ");
+   getirradiance();                     // Request to calculate the irradiance (uW/cm2)
+   Serial.print("  ");
+   Serial.print(irradiance);             // print the frequency (pulses/second)
+   Serial.println(" uW/cm2");
+   pulses = 0;                          // reset the pulses counter
+   delay (4000);                        // wait 4 seconds until the next measurement
+  }
 }
 
 

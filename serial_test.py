@@ -1,18 +1,22 @@
 import serial
 
+check = 0
 connected = False
 print "Not connected"
 
-ser = serial.Serial("COM2", 9600)
+ser = serial.Serial("/dev/ttyACM1", 9600)
 
 while not connected:
 	serin = ser.read()
 	connected = True
 print "Connected"
 
-ser.Write("1")
+ser.write("1")
 
-while ser.read() == '1':
-	ser.read()
+while check == 0:
+	ser.readline()
+	print ser.readline()
+	if ser.read() == '0':
+		check = 1
 
 ser.close()
