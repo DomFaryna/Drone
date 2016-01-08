@@ -1,3 +1,5 @@
+#include <TimerOne.h>
+
 /* Example: TSL235R
   Collaborative ideas from:
   retrofelty, robtillaart, Gumpy_Mike, and madepablo
@@ -33,6 +35,7 @@ float irradiance;                      // Calculated irradiance (uW/cm2)
 
 
 void setup() {
+ Timer1.initialize(2000000);
  Serial.begin(9600);                           // Start and configure the serial port
  attachInterrupt(0, PulseCount, RISING);
  pinMode(TSL235R, INPUT);
@@ -44,31 +47,41 @@ void setup() {
 
 void loop(){
   
-  if(Serial.read() == 1){
-    //if(Serial.available())
+  
+    
       if(done < 10){
-         counter++;                           // Increase the number of measurement
-         //Serial.print(counter);               // Print the measurement number
-         getfrequency();                      // Request to measure the frequency
-         //Serial.print("  ");
-         Serial.println(frequency);             // print the frequency (pulses/second)
-         //Serial.println("");
-         //Serial.print(" pulses/second    ");
-         getirradiance();                     // Request to calculate the irradiance (uW/cm2)
-         //Serial.print("  ");
-         //Serial.print(irradiance);             // print the frequency (pulses/second)
-         //Serial.println(" uW/cm2");
-         pulses = 0;                          // reset the pulses counter
-         delay (4000);     // wait 4 seconds until the next measurement
+        Timer1.attachInterrupt(getStuffDone);
          
-         done++;
+         
       } else{
+        Timer1.detachInterrupt();
         Serial.println("x");
         delay(1000);
       }
+      
+      if(Serial.available()){
+        Serial.read();
+        Serial.println(frequency);
     }
+    
 }
 
+
+void getStuffDone(){
+     counter++;                           // Increase the number of measurement
+     //Serial.print(counter);               // Print the measurement number
+     getfrequency();                      // Request to measure the frequency
+     //Serial.print("  ");
+     //Serial.println(frequency);             // print the frequency (pulses/second)
+     //Serial.println("");
+     //Serial.print(" pulses/second    ");
+     getirradiance();                     // Request to calculate the irradiance (uW/cm2)
+     //Serial.print("  ");
+     //Serial.print(irradiance);             // print the frequency (pulses/second)
+     //Serial.println(" uW/cm2");
+     pulses = 0;                          // reset the pulses counter 
+     done++;
+}
 
 void PulseCount()
 {
@@ -86,3 +99,5 @@ float getirradiance () {
  irradiance = frequency / area;      // Calculate Irradiance (uW/cm2)
  return (irradiance);
 }
+
+

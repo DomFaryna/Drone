@@ -24,18 +24,23 @@ void loop() {
       
       timer++;
       //Serial.println(Serial.available());
-      Serial.read();
       
-  }if (!Serial.available()){
-         if (timer != 0){
-         Serial.println(timer);
-         timer = 0;
-         delay (500);
-        }
-      }
+      
+      cha = Serial.read();
+      rea += cha;
+      
+      
+  }  
+
   
+  delay(500);
   
-    
+  if(rea != ""){
+    Serial.println(rea);
+  }
+  
+  rea = "";
+  
   
 }
 
