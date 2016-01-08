@@ -1,5 +1,4 @@
 import serial
-import ps_drone
 
 check = 0
 
@@ -12,7 +11,6 @@ for i in xrange(0, 10):
 		ser = serial.Serial(port, 9600)
 		pas = 1
 		print "connected to " + port
-		ser.write("test")
 		break
 	
 	except:
@@ -28,18 +26,9 @@ if pas == 1:
 	ser.write("1")
 
 	while check == 0:
-		ser.write("1")
-#		ser.open()
 		word = ser.readline()
 		print word
-		try:
-			x = int(word[:-1])
-			if x > 100000:
-				print "Pretty big number"
-			else:
-				print "Pretty small number"
-		except:
-			crap = 0
+		
 		if 'x' in word:
 			check = 1
 	

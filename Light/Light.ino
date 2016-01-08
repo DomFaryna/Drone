@@ -21,6 +21,7 @@
 int period = 1000;                     // Miliseconds of each light frecuency measurement
 int ScalingFactor = 1;                 // Scaling factor of this sensor
 float area = 0.0092;                   // Sensing area of TSL235R device (cm2)
+int done = 0;
 
 // Variables
 unsigned long counter = 0;             // Counter of measurements during the test
@@ -42,20 +43,30 @@ void setup() {
 }
 
 void loop(){
-  if(Serial.available() > 0){
-   counter++;                           // Increase the number of measurement
-   Serial.print(counter);               // Print the measurement number
-   getfrequency();                      // Request to measure the frequency
-   Serial.print("  ");
-   Serial.print(frequency);             // print the frequency (pulses/second)
-   Serial.print(" pulses/second    ");
-   getirradiance();                     // Request to calculate the irradiance (uW/cm2)
-   Serial.print("  ");
-   Serial.print(irradiance);             // print the frequency (pulses/second)
-   Serial.println(" uW/cm2");
-   pulses = 0;                          // reset the pulses counter
-   delay (4000);                        // wait 4 seconds until the next measurement
-  }
+  
+  if(Serial.read() == 1){
+    //if(Serial.available())
+      if(done < 10){
+         counter++;                           // Increase the number of measurement
+         //Serial.print(counter);               // Print the measurement number
+         getfrequency();                      // Request to measure the frequency
+         //Serial.print("  ");
+         Serial.println(frequency);             // print the frequency (pulses/second)
+         //Serial.println("");
+         //Serial.print(" pulses/second    ");
+         getirradiance();                     // Request to calculate the irradiance (uW/cm2)
+         //Serial.print("  ");
+         //Serial.print(irradiance);             // print the frequency (pulses/second)
+         //Serial.println(" uW/cm2");
+         pulses = 0;                          // reset the pulses counter
+         delay (4000);     // wait 4 seconds until the next measurement
+         
+         done++;
+      } else{
+        Serial.println("x");
+        delay(1000);
+      }
+    }
 }
 
 
