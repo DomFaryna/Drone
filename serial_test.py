@@ -1,4 +1,5 @@
 import serial
+import time
 import ps_drone
 
 check = 0
@@ -24,12 +25,12 @@ if pas == 1:
 		serin = ser.read()
 		connected = True
 	print "Connected"
-
-	ser.write("1")
+	time.sleep(1)
+	ser.write("test")
 
 	while check == 0:
-		ser.write("1")
-#		ser.open()
+		time.sleep(0.5)
+		ser.write("o")
 		word = ser.readline()
 		print word
 		try:

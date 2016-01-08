@@ -20,7 +20,7 @@ for i in xrange(0, 10):
 
 
 while timer < 5:
-	ser.write("3")
+	ser.write("hello")
 	time.sleep(1)
 	timer = timer + 1
 
